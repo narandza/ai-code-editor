@@ -1,5 +1,3 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter } from "next/font/google";
 import {
   ClerkProvider,
   SignInButton,
@@ -8,7 +6,9 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import { dark } from "@clerk/themes";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 
 import { ThemeProvider } from "@/components/theme-provider";
 
