@@ -14,6 +14,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
+          forcedTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
