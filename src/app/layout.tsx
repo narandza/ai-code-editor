@@ -13,6 +13,7 @@ import { IBM_Plex_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -49,21 +50,23 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <header>
-              <SignedOut>
-                <SignInButton />
-                <SignUpButton>
-                  <button className="bg-rose-500 text-white p-2 rounded">
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
+            <ConvexClientProvider>
+              <header>
+                <SignedOut>
+                  <SignInButton />
+                  <SignUpButton>
+                    <button className="bg-rose-500 text-white p-2 rounded">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </SignedOut>
 
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </header>
-            {children}
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </header>
+              {children}
+            </ConvexClientProvider>
           </ThemeProvider>
         </body>
       </html>
