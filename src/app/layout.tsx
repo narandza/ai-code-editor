@@ -1,11 +1,4 @@
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { dark } from "@clerk/themes";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
@@ -13,7 +6,7 @@ import { IBM_Plex_Mono, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
-import { ConvexClientProvider } from "@/components/convex-client-provider";
+import { Providers } from "@/components/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,23 +43,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <ConvexClientProvider>
-              <header>
-                <SignedOut>
-                  <SignInButton />
-                  <SignUpButton>
-                    <button className="bg-rose-500 text-white p-2 rounded">
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </SignedOut>
-
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-              </header>
-              {children}
-            </ConvexClientProvider>
+            <Providers>{children}</Providers>
           </ThemeProvider>
         </body>
       </html>
