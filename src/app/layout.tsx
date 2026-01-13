@@ -37,14 +37,7 @@ export default function RootLayout({
     >
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Providers>{children}</Providers>
-          </ThemeProvider>
+          <Providers>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>
