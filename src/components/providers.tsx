@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  useAuth,
-  UserButton,
-} from "@clerk/nextjs";
+import { UnauthenticatedView } from "@/features/auth/components/unauthenticated-view";
+import { ClerkProvider, useAuth, UserButton } from "@clerk/nextjs";
 import {
   Authenticated,
   AuthLoading,
@@ -35,8 +30,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
           </Authenticated>
 
           <Unauthenticated>
-            <SignInButton />
-            <SignUpButton />
+            <UnauthenticatedView />
           </Unauthenticated>
 
           <AuthLoading>auth loading..</AuthLoading>
