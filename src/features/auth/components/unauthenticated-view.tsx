@@ -1,4 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { SignInButton } from "@clerk/nextjs";
+import { ShieldAlertIcon } from "lucide-react";
+
 import {
   Item,
   ItemActions,
@@ -7,8 +9,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
-import { SignInButton } from "@clerk/nextjs";
-import { ShieldAlertIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const UnauthenticatedView = () => {
   return (
