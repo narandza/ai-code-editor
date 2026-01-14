@@ -1,6 +1,7 @@
 import { generateText } from "ai";
-import { inngest } from "./client";
 import { google } from "@ai-sdk/google";
+
+import { inngest } from "./client";
 
 export const demoGenerate = inngest.createFunction(
   { id: "demo-generate" },
