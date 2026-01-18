@@ -22,7 +22,7 @@ export const demoGenerate = inngest.createFunction(
           const result = await firecrawl.scrape(url, { formats: ["markdown"] });
 
           return result.markdown ?? null;
-        })
+        }),
       );
       return results.filter(Boolean).join("\n\n");
     });
@@ -37,5 +37,15 @@ export const demoGenerate = inngest.createFunction(
         prompt: finalPrompt,
       });
     });
-  }
+  },
+);
+
+export const demoError = inngest.createFunction(
+  { id: "demo-error" },
+  { event: "demo/error" },
+  async ({ step }) => {
+    await step.run("fail", async () => {
+      throw new Error("Inngest error: Background job failed!");
+    });
+  },
 );
