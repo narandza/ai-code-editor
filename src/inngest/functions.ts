@@ -1,8 +1,9 @@
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
 
-import { inngest } from "./client";
 import { firecrawl } from "@/lib/firecrawl";
+
+import { inngest } from "./client";
 
 const URL_REGEX = /https?:\/\/[^\s]*/g;
 
