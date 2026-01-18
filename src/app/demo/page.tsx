@@ -3,8 +3,12 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import * as Sentry from "@sentry/nextjs";
+import { useAuth } from "@clerk/nextjs";
 
 export default function DemoPage() {
+  const { userId } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const handleBlocking = async () => {
@@ -21,6 +25,9 @@ export default function DemoPage() {
 
   // 1. Client error -> throws in the browser
   const handleClientError = () => {
+    Sentry.logger.info("User attempting to click on client function", {
+      userId,
+    });
     throw new Error("Client error: Something went wrong in the browser!");
   };
 
