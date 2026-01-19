@@ -5,6 +5,6 @@ export const useProjects = () => {
   return useQuery(api.projects.get);
 };
 
-export const useProjectPartial = (limit: number) => {
+export const useProjectsPartial = (limit: number) => {
   return useQuery(api.projects.getPartial, { limit });
 };
