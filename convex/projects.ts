@@ -37,3 +37,19 @@ export const getPartial = query({
       .take(args.limit);
   },
 });
+
+export const get = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await verifyAuth(ctx);
+
+    if (!identity) {
+      return [];
+    }
+
+    return ctx.db
+      .query("projects")
+      .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
+      .collect();
+  },
+});
