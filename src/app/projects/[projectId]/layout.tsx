@@ -1,3 +1,5 @@
+import { ProjectIdLayout } from "@/features/projects/components/project-id-layout";
+
 const Layout = async ({
   children,
   params,
@@ -6,7 +8,8 @@ const Layout = async ({
   params: Promise<{ projectId: string }>;
 }) => {
   const { projectId } = await params;
-  return <div className="">Layout {children}</div>;
+
+  return <ProjectIdLayout projectId={projectId}>{children}</ProjectIdLayout>;
 };
 
 export default Layout;
