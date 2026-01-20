@@ -1,17 +1,19 @@
-import { Spinner } from "@/components/ui/spinner";
-import { useProjectsPartial } from "../hooks/use-projects";
-import { Kbd } from "@/components/ui/kbd";
-import { Doc } from "../../../../convex/_generated/dataModel";
-import Link from "next/link";
 import {
   AlertCircleIcon,
   ArrowRightIcon,
   GlobeIcon,
   Loader2Icon,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
+import { formatDistanceToNow } from "date-fns";
+
+import { Kbd } from "@/components/ui/kbd";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+
+import { useProjectsPartial } from "../hooks/use-projects";
+import { Doc } from "../../../../convex/_generated/dataModel";
 
 const formatTimestamp = (timestamp: number) => {
   return formatDistanceToNow(new Date(timestamp), { addSuffix: true });

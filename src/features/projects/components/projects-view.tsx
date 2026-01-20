@@ -1,21 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Kbd } from "@/components/ui/kbd";
-import { cn } from "@/lib/utils";
-import { SparkleIcon } from "lucide-react";
-import { Poppins } from "next/font/google";
-import { FaGithub } from "react-icons/fa";
-import { ProjectsList } from "./projects-list";
-import { useCreateProject } from "../hooks/use-projects";
 import {
   adjectives,
   animals,
   colors,
   uniqueNamesGenerator,
 } from "unique-names-generator";
+import { FaGithub } from "react-icons/fa";
+import { SparkleIcon } from "lucide-react";
+import { Poppins } from "next/font/google";
 import { useEffect, useState } from "react";
+
+import { cn } from "@/lib/utils";
+import { Kbd } from "@/components/ui/kbd";
+import { Button } from "@/components/ui/button";
 import { ProjectsCommandDialog } from "@/features/auth/components/projects-command-dialog";
+
+import { ProjectsList } from "./projects-list";
+import { useCreateProject } from "../hooks/use-projects";
 
 const font = Poppins({
   subsets: ["latin"],

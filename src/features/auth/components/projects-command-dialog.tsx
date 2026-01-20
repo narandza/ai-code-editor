@@ -1,8 +1,7 @@
-import { useProjects } from "@/features/projects/hooks/use-projects";
-import { useRouter } from "next/navigation";
-import { Doc } from "../../../../convex/_generated/dataModel";
 import { FaGithub } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { AlertCircleIcon, GlobeIcon, Loader2Icon } from "lucide-react";
+
 import {
   CommandDialog,
   CommandEmpty,
@@ -11,6 +10,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useProjects } from "@/features/projects/hooks/use-projects";
+
+import { Doc } from "../../../../convex/_generated/dataModel";
 
 interface ProjectsCommandDialogProps {
   open: boolean;
