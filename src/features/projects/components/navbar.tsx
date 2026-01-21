@@ -1,3 +1,16 @@
+import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+import { Poppins } from "next/font/google";
+import { formatDistanceToNow } from "date-fns";
+import { CloudCheckIcon, LoaderIcon } from "lucide-react";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,22 +19,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
 import { UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+
+import { Id } from "../../../../convex/_generated/dataModel";
 import { useProject, useRenameProject } from "../hooks/use-projects";
-import { useState } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { CloudCheckIcon, LoaderIcon } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 
 const font = Poppins({
   subsets: ["latin"],

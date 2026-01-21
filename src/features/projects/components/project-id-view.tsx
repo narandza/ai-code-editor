@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Id } from "../../../../convex/_generated/dataModel";
 import { useState } from "react";
 import { FaGithub } from "react-icons/fa";
+
+import { cn } from "@/lib/utils";
+
+import { Id } from "../../../../convex/_generated/dataModel";
 
 const Tab = ({
   label,
