@@ -27,10 +27,6 @@ export const getPartial = query({
   handler: async (ctx, args) => {
     const identity = await verifyAuth(ctx);
 
-    if (!identity) {
-      return [];
-    }
-
     return ctx.db
       .query("projects")
       .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
@@ -43,10 +39,6 @@ export const get = query({
   args: {},
   handler: async (ctx) => {
     const identity = await verifyAuth(ctx);
-
-    if (!identity) {
-      return [];
-    }
 
     return ctx.db
       .query("projects")
@@ -63,10 +55,6 @@ export const getById = query({
   handler: async (ctx, args) => {
     const identity = await verifyAuth(ctx);
 
-    if (!identity) {
-      return null;
-    }
-
     const project = await ctx.db.get("projects", args.id);
 
     if (!project) {
@@ -78,5 +66,30 @@ export const getById = query({
     }
 
     return project;
+  },
+});
+
+export const rename = mutation({
+  args: {
+    id: v.id("projects"),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await verifyAuth(ctx);
+
+    const project = await ctx.db.get("projects", args.id);
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (project.ownerId !== identity.subject) {
+      throw new Error("Unauthorized access to this project");
+    }
+
+    await ctx.db.patch("projects", args.id, {
+      name: args.name,
+      updatedAt: Date.now(),
+    });
   },
 });
