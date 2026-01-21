@@ -64,7 +64,7 @@ export const getById = query({
     const identity = await verifyAuth(ctx);
 
     if (!identity) {
-      return [];
+      return null;
     }
 
     const project = await ctx.db.get("projects", args.id);

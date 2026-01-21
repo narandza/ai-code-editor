@@ -13,6 +13,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import { UserButton } from "@clerk/nextjs";
+import { useProject } from "../hooks/use-projects";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -20,6 +21,8 @@ const font = Poppins({
 });
 
 export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
+  const project = useProject(projectId);
+
   return (
     <nav className="flex justify-between items-center gap-x-2 p-2 bg-sidebar border-b ">
       <div className="flex items-center gap-x-2">
@@ -40,7 +43,7 @@ export const Navbar = ({ projectId }: { projectId: Id<"projects"> }) => {
             <BreadcrumbSeparator className="ml-0! mr-1!" />
             <BreadcrumbItem>
               <BreadcrumbPage className="text-sm cursor-pointer hover:text-primary font-medium max-w-40 truncate">
-                Demo Project
+                {project?.name ?? "Loading..."}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
