@@ -6,6 +6,12 @@ import { FaGithub } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 
 import { Id } from "../../../../convex/_generated/dataModel";
+import { Allotment } from "allotment";
+
+const MIN_SIDEBAR_WIDTH = 200;
+const MAX_SIDEBAR_WIDTH = 800;
+const DEFAULT_SIDEBAR_WIDTH = 350;
+const DEFAULT_MAIN_SIZE = 1000;
 
 const Tab = ({
   label,
@@ -59,7 +65,23 @@ export const ProjectIdView = ({ projectId }: { projectId: Id<"projects"> }) => {
             activeView === "editor" ? "visible" : "invisible",
           )}
         >
-          <div className="">Editor</div>
+          <div className="">
+            <Allotment
+              defaultSizes={[DEFAULT_SIDEBAR_WIDTH, DEFAULT_MAIN_SIZE]}
+            >
+              <Allotment.Pane
+                snap
+                minSize={MIN_SIDEBAR_WIDTH}
+                maxSize={MAX_SIDEBAR_WIDTH}
+                preferredSize={DEFAULT_SIDEBAR_WIDTH}
+              >
+                <p>file explorer</p>
+              </Allotment.Pane>
+              <Allotment.Pane>
+                <p>editor view</p>
+              </Allotment.Pane>
+            </Allotment>
+          </div>
         </div>
         <div
           className={cn(
