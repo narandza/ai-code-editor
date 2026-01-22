@@ -3,6 +3,43 @@ import { mutation, query } from "./_generated/server";
 import { verifyAuth } from "./auth";
 import { Id } from "./_generated/dataModel";
 
+export const updateFile = mutation({
+  args: {
+    id: v.id("files"),
+    content: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await verifyAuth(ctx);
+
+    const file = await ctx.db.get("files", args.id);
+
+    if (!file) {
+      throw new Error("File not found");
+    }
+
+    const project = await ctx.db.get("projects", file.projectId);
+
+    if (!project) {
+      throw new Error("Project not found");
+    }
+
+    if (project.ownerId !== identity.subject) {
+      throw new Error("Unauthorized access to this project");
+    }
+
+    const now = Date.now();
+
+    await ctx.db.patch("files", args.id, {
+      content: args.content,
+      updatedAt: now,
+    });
+
+    await ctx.db.patch("projects", file.projectId, {
+      updatedAt: now,
+    });
+  },
+});
+
 export const deleteFile = mutation({
   args: {
     id: v.id("files"),
@@ -56,6 +93,10 @@ export const deleteFile = mutation({
     };
 
     await deleteRecursive(args.id);
+
+    await ctx.db.patch("projects", file.projectId, {
+      updatedAt: Date.now(),
+    });
   },
 });
 
@@ -107,6 +148,10 @@ export const renameFile = mutation({
     // Update the file's name
     await ctx.db.patch("files", args.id, {
       name: args.newName,
+      updatedAt: Date.now(),
+    });
+
+    await ctx.db.patch("projects", file.projectId, {
       updatedAt: Date.now(),
     });
   },
