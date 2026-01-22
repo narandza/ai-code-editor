@@ -197,6 +197,10 @@ export const createFolder = mutation({
       parentId: args.parentId,
       updatedAt: Date.now(),
     });
+
+    await ctx.db.patch("projects", args.projectId, {
+      updatedAt: Date.now(),
+    });
   },
 });
 
@@ -240,6 +244,10 @@ export const createFile = mutation({
       content: args.content,
       type: "file",
       parentId: args.parentId,
+      updatedAt: Date.now(),
+    });
+
+    await ctx.db.patch("projects", args.projectId, {
       updatedAt: Date.now(),
     });
   },
