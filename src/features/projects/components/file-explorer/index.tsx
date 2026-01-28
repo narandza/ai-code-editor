@@ -11,6 +11,7 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { useProject } from "../../hooks/use-projects";
 import { Button } from "@/components/ui/button";
 import { useCreateFile, useCreateFolder } from "../../hooks/use-files";
+import { CreateInput } from "./create-input";
 
 export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,7 +107,7 @@ export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
                 type={creating}
                 level={0}
                 onSubmit={handleCreate}
-                onCancel={() => setCreating(nul)}
+                onCancel={() => setCreating(null)}
               />
             )}
           </>
