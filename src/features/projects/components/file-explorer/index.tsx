@@ -1,6 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, FilePlusCornerIcon } from "lucide-react";
 import { useState } from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { useProject } from "../../hooks/use-projects";
@@ -37,8 +37,10 @@ export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
                 // Set creating to true
               }}
               variant="highlight"
-              size="xs"
-            ></Button>
+              size="icon-xs"
+            >
+              <FilePlusCornerIcon className="size-3.5" />
+            </Button>
           </div>
         </div>
       </ScrollArea>
