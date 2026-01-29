@@ -17,6 +17,7 @@ import {
 } from "../../hooks/use-files";
 import { CreateInput } from "./create-input";
 import { LoadingRow } from "./loading-row";
+import { Tree } from "./tree";
 
 export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,6 +121,14 @@ export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
                 onCancel={() => setCreating(null)}
               />
             )}
+            {rootFiles?.map((item) => (
+              <Tree
+                key={`${item._id}-${collapseKey}`}
+                item={item}
+                level={0}
+                projectId={projectId}
+              />
+            ))}
           </>
         )}
       </ScrollArea>
