@@ -16,6 +16,7 @@ import {
   useFolderContents,
 } from "../../hooks/use-files";
 import { CreateInput } from "./create-input";
+import { LoadingRow } from "./loading-row";
 
 export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
   const [isOpen, setIsOpen] = useState(false);
