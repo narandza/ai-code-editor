@@ -12,6 +12,8 @@ import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
 import { ChevronRightIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LoadingRow } from "./loading-row";
+import { getItemPadding } from "./constants";
+import { CreateInput } from "./create-input";
 
 export const Tree = ({
   item,
@@ -40,6 +42,25 @@ export const Tree = ({
   const startCreating = (type: "file" | "folder") => {
     setIsOpen(true);
     setCreating(type);
+  };
+
+  const handleCreate = (name: string) => {
+    setCreating(null);
+
+    if (creating === "file") {
+      createFile({
+        projectId,
+        name,
+        content: "",
+        parentId: item._id,
+      });
+    } else {
+      createFolder({
+        projectId,
+        name,
+        parentId: item._id,
+      });
+    }
   };
 
   if (item.type === "file") {
@@ -81,6 +102,40 @@ export const Tree = ({
       <span className="truncate text-sm">{folderName}</span>
     </>
   );
+
+  if (creating) {
+    return (
+      <>
+        <button
+          onClick={() => setIsOpen((value) => !value)}
+          className="group flex items-center gap-1 h-5.5 hover:bg-accent/30 cursor-pointer w-full"
+          style={{ paddingLeft: getItemPadding(level, false) }}
+        >
+          {folderContent}
+        </button>
+        {isOpen && (
+          <>
+            {folderContents === undefined && <LoadingRow level={level + 1} />}
+            <CreateInput
+              type={creating}
+              level={level + 1}
+              onSubmit={handleCreate}
+              onCancel={() => setCreating(null)}
+            />
+            {folderContents?.map((subItem) => (
+              <Tree
+                key={subItem._id}
+                item={subItem}
+                level={level + 1}
+                projectId={projectId}
+              />
+            ))}
+          </>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <TreeItemWrapper
