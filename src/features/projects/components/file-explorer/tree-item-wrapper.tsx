@@ -1,14 +1,14 @@
+import { Doc } from "../../../../../convex/_generated/dataModel";
+import { cn } from "@/lib/utils";
+import { getItemPadding } from "./constants";
 import {
+  ContextMenuShortcut,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@radix-ui/react-context-menu";
-import { Doc } from "../../../../../convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
-import { getItemPadding } from "./constants";
-import { ContextMenuShortcut } from "@/components/ui/context-menu";
+} from "@/components/ui/context-menu";
 
 export const TreeItemWrapper = ({
   item,
