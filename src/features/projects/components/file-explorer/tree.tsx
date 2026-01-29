@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
+import {
+  useCreateFile,
+  useCreateFolder,
+  useDeleteFile,
+  useFolderContents,
+  useRenameFile,
+} from "../../hooks/use-files";
 
 export const Tree = ({
   item,
@@ -14,5 +21,20 @@ export const Tree = ({
   const [isRenaming, setIsRenaming] = useState(false);
   const [creating, setCreating] = useState<"file" | "folder" | null>(null);
 
-  return <div className=""></div>;
+  const renameFile = useRenameFile();
+  const deleteFile = useDeleteFile();
+  const createFile = useCreateFile();
+  const createFolder = useCreateFolder();
+
+  const folderContents = useFolderContents({
+    projectId,
+    parentId: item._id,
+    enabled: item.type === "folder" && isOpen,
+  });
+
+  if (item.type === "file") {
+    return <div className="">file</div>;
+  }
+
+  return <div className="">folder</div>;
 };
