@@ -88,7 +88,7 @@ export const Tree = ({
   }
 
   const folderName = item.name;
-  const folderContent = (
+  const folderRender = (
     <>
       <div className="flex item-center gap-0.5">
         <ChevronRightIcon
@@ -111,17 +111,19 @@ export const Tree = ({
           className="group flex items-center gap-1 h-5.5 hover:bg-accent/30 cursor-pointer w-full"
           style={{ paddingLeft: getItemPadding(level, false) }}
         >
-          {folderContent}
+          {folderRender}
         </button>
         {isOpen && (
           <>
             {folderContents === undefined && <LoadingRow level={level + 1} />}
+
             <CreateInput
               type={creating}
               level={level + 1}
               onSubmit={handleCreate}
               onCancel={() => setCreating(null)}
             />
+
             {folderContents?.map((subItem) => (
               <Tree
                 key={subItem._id}
@@ -151,7 +153,7 @@ export const Tree = ({
         onCreateFile={() => startCreating("file")}
         onCreateFolder={() => startCreating("folder")}
       >
-        {folderContent}
+        {folderRender}
       </TreeItemWrapper>
       {isOpen && (
         <>
