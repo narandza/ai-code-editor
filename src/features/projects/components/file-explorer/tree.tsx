@@ -168,6 +168,20 @@ export const Tree = ({
           onSubmit={handleRename}
           onCancel={() => setIsRenaming(false)}
         />
+        {isOpen && (
+          <>
+            {folderContents === undefined && <LoadingRow level={level + 1} />}
+
+            {folderContents?.map((subItem) => (
+              <Tree
+                key={subItem._id}
+                item={subItem}
+                level={level + 1}
+                projectId={projectId}
+              />
+            ))}
+          </>
+        )}
       </>
     );
   }
