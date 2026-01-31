@@ -1,5 +1,3 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import {
   ChevronRightIcon,
   CopyMinusIcon,
@@ -7,17 +5,21 @@ import {
   FolderPlusIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Id } from "../../../../../convex/_generated/dataModel";
-import { useProject } from "../../hooks/use-projects";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { Tree } from "./tree";
 import {
   useCreateFile,
   useCreateFolder,
   useFolderContents,
 } from "../../hooks/use-files";
-import { CreateInput } from "./create-input";
 import { LoadingRow } from "./loading-row";
-import { Tree } from "./tree";
+import { CreateInput } from "./create-input";
+import { useProject } from "../../hooks/use-projects";
+import { Id } from "../../../../../convex/_generated/dataModel";
 
 export const FileExplorer = ({ projectId }: { projectId: Id<"projects"> }) => {
   const [isOpen, setIsOpen] = useState(false);

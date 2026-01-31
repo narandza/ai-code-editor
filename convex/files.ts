@@ -1,7 +1,8 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+
 import { verifyAuth } from "./auth";
 import { Id } from "./_generated/dataModel";
+import { mutation, query } from "./_generated/server";
 
 export const updateFile = mutation({
   args: {

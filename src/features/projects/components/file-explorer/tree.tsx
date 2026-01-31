@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { Doc, Id } from "../../../../../convex/_generated/dataModel";
+import { ChevronRightIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
+
 import {
   useCreateFile,
   useCreateFolder,
@@ -7,14 +11,12 @@ import {
   useFolderContents,
   useRenameFile,
 } from "../../hooks/use-files";
-import { TreeItemWrapper } from "./tree-item-wrapper";
-import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
-import { ChevronRightIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { LoadingRow } from "./loading-row";
 import { getItemPadding } from "./constants";
 import { CreateInput } from "./create-input";
 import { RenameInput } from "./rename-input";
+import { TreeItemWrapper } from "./tree-item-wrapper";
+import { Doc, Id } from "../../../../../convex/_generated/dataModel";
 
 export const Tree = ({
   item,

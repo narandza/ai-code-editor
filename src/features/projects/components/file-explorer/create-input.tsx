@@ -1,6 +1,7 @@
-import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
-import { ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
+import { ChevronRightIcon } from "lucide-react";
+import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
+
 import { getItemPadding } from "./constants";
 
 interface CreateInputProps {

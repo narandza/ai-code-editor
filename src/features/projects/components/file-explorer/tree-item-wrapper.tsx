@@ -1,6 +1,4 @@
-import { Doc } from "../../../../../convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
-import { getItemPadding } from "./constants";
 import {
   ContextMenuShortcut,
   ContextMenu,
@@ -9,6 +7,9 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+
+import { getItemPadding } from "./constants";
+import { Doc } from "../../../../../convex/_generated/dataModel";
 
 export const TreeItemWrapper = ({
   item,

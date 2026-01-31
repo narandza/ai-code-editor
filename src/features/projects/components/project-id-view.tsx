@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { Allotment } from "allotment";
 import { FaGithub } from "react-icons/fa";
 
 import { cn } from "@/lib/utils";
 
+import { FileExplorer } from "./file-explorer";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { Allotment } from "allotment";
 
 import "allotment/dist/style.css";
-import { FileExplorer } from "./file-explorer";
 
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;
