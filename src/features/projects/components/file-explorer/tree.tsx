@@ -157,6 +157,21 @@ export const Tree = ({
     );
   }
 
+  if (isRenaming) {
+    return (
+      <>
+        <RenameInput
+          type="folder"
+          defaultValue={folderName}
+          level={level}
+          isOpen={isOpen}
+          onSubmit={handleRename}
+          onCancel={() => setIsRenaming(false)}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <TreeItemWrapper
