@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { LoadingRow } from "./loading-row";
 import { getItemPadding } from "./constants";
 import { CreateInput } from "./create-input";
+import { RenameInput } from "./rename-input";
 
 export const Tree = ({
   item,
@@ -63,9 +64,27 @@ export const Tree = ({
     }
   };
 
+  const handleRename = (newName: string) => {
+    setIsRenaming(false);
+
+    if (newName === item.name) return;
+
+    renameFile({ id: item._id, newName });
+  };
+
   if (item.type === "file") {
     const fileName = item.name;
-
+    if (isRenaming) {
+      return (
+        <RenameInput
+          type="file"
+          defaultValue={fileName}
+          level={level}
+          onSubmit={handleRename}
+          onCancel={() => setIsRenaming(false)}
+        />
+      );
+    }
     return (
       <TreeItemWrapper
         item={item}
