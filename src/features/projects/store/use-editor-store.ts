@@ -22,7 +22,7 @@ interface EditorStore {
     options: { pinned: boolean },
   ) => void;
   closeTab: (projectId: Id<"projects">, file: Id<"files">) => void;
-  closeAllTabs: (projectId: Id<"projects">, file: Id<"files">) => void;
+  closeAllTabs: (projectId: Id<"projects">) => void;
   setActiveTab: (projectId: Id<"projects">, file: Id<"files">) => void;
 }
 
