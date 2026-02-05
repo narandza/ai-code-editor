@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { javascript } from "@codemirror/lang-javascript";
@@ -11,9 +11,21 @@ export const CodeEditor = () => {
   useEffect(() => {
     if (!editorRef.current) return;
     const view = new EditorView({
-      doc: "Start document",
+      doc: `const Counter = () => {
+      const [value, setValue] = useState(0);
+      
+      const onIncrease = setValue((value) => value =1)};
+      
+      return (
+      <div className="">
+        <button onClick={onIncrease} className="">
+        {value}
+        </button>
+      </div>
+      )
+      `,
       parent: editorRef.current,
-      extensions: [basicSetup, javascript({ typescript: true })],
+      extensions: [oneDark, basicSetup, javascript({ typescript: true })],
     });
 
     viewRef.current = view;
