@@ -1,10 +1,14 @@
+import { useFile } from "@/features/projects/hooks/use-files";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useEditor } from "../hooks/use-editor";
 import { FileBreadcrumbs } from "./file-breadcrumbs";
 import { TopNavigation } from "./top-navigation";
+import Image from "next/image";
+import { CodeEditor } from "./code-editor";
 
 export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
   const { activeTabId } = useEditor(projectId);
+  const activeFile = useFile(activeTabId);
 
   return (
     <div className="h-full flex flex-col">
@@ -12,6 +16,21 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
         <TopNavigation projectId={projectId} />
       </div>
       {activeTabId && <FileBreadcrumbs projectId={projectId} />}
+      <div className="flex-1 min-h-0 bg-background">
+        {!activeFile && (
+          <div className="size-full flex items-center justify-center">
+            {/* TODO: Magic numbers */}
+            <Image
+              src="/logo-alt.svg"
+              alt="Polaris"
+              width={50}
+              height={50}
+              className="opacity-25"
+            />
+          </div>
+        )}
+        {activeFile && <CodeEditor />}
+      </div>
     </div>
   );
 };
