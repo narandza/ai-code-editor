@@ -20,8 +20,6 @@ export const FileBreadcrumbs = ({
   const { activeTabId } = useEditor(projectId);
   const filePath = useFilePath(activeTabId);
 
-  // TODO: Fix inline ~8h p1
-
   if (filePath === undefined && !activeTabId) {
     return (
       <div className="p-2 bg-background pl-4 border-b">
@@ -37,34 +35,32 @@ export const FileBreadcrumbs = ({
   }
 
   return (
-    <div className="p-2 bg-background pl-4 border-b">
+    <div className="p-2  bg-background pl-4 border-b">
       <Breadcrumb>
         <BreadcrumbList className="sm:gap-0.5 gap-0.5">
-          <BreadcrumbPage>
-            {filePath?.map((item, index) => {
-              const isLast = index === filePath.length - 1;
+          {filePath?.map((item, index) => {
+            const isLast = index === filePath.length - 1;
 
-              return (
-                <React.Fragment key={item._id}>
-                  <BreadcrumbItem className="text-sm">
-                    {isLast ? (
-                      <BreadcrumbPage className="inline-flex items-center gap-1">
-                        <FileIcon
-                          fileName={item.name}
-                          autoAssign
-                          className="size-4"
-                        />
-                        {item.name}
-                      </BreadcrumbPage>
-                    ) : (
-                      <BreadcrumbLink href="#">{item.name}</BreadcrumbLink>
-                    )}
-                  </BreadcrumbItem>
-                  {!isLast && <BreadcrumbSeparator />}
-                </React.Fragment>
-              );
-            })}
-          </BreadcrumbPage>
+            return (
+              <React.Fragment key={item._id}>
+                <BreadcrumbItem className="text-sm">
+                  {isLast ? (
+                    <BreadcrumbPage className="flex items-center gap-1">
+                      <FileIcon
+                        fileName={item.name}
+                        autoAssign
+                        className="size-4"
+                      />
+                      {item.name}
+                    </BreadcrumbPage>
+                  ) : (
+                    <BreadcrumbLink href="#">{item.name}</BreadcrumbLink>
+                  )}
+                </BreadcrumbItem>
+                {!isLast && <BreadcrumbSeparator />}
+              </React.Fragment>
+            );
+          })}
         </BreadcrumbList>
       </Breadcrumb>
     </div>
