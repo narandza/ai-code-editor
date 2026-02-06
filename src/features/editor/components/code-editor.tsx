@@ -4,7 +4,8 @@ import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { customTheme } from "../extensions/theme";
 import { getLanguageExtension } from "../extensions/language-extension";
-import { indent, indentWithTab } from "@codemirror/commands";
+import { indentWithTab } from "@codemirror/commands";
+import { minimap } from "../extensions/minimap";
 
 interface Props {
   filename: string;
@@ -42,6 +43,7 @@ export const CodeEditor = ({ filename }: Props) => {
         basicSetup,
         languageExtension,
         keymap.of([indentWithTab]),
+        minimap(),
       ],
     });
 
