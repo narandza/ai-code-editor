@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { EditorView } from "@codemirror/view";
+import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 import { customTheme } from "../extensions/theme";
 import { getLanguageExtension } from "../extensions/language-extension";
+import { indent, indentWithTab } from "@codemirror/commands";
 
 interface Props {
   filename: string;
@@ -36,7 +36,13 @@ export const CodeEditor = ({ filename }: Props) => {
       )
       `,
       parent: editorRef.current,
-      extensions: [customTheme, oneDark, basicSetup, languageExtension],
+      extensions: [
+        customTheme,
+        oneDark,
+        basicSetup,
+        languageExtension,
+        keymap.of([indentWithTab]),
+      ],
     });
 
     viewRef.current = view;
