@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView, keymap } from "@codemirror/view";
-import { basicSetup } from "codemirror";
 import { customTheme } from "../extensions/theme";
 import { getLanguageExtension } from "../extensions/language-extension";
 import { indentWithTab } from "@codemirror/commands";
 import { minimap } from "../extensions/minimap";
 import { indentationMarkers } from "@replit/codemirror-indentation-markers";
+import { customSetup } from "../extensions/custom-setup";
 
 interface Props {
   filename: string;
@@ -41,7 +41,7 @@ export const CodeEditor = ({ filename }: Props) => {
       extensions: [
         customTheme,
         oneDark,
-        basicSetup,
+        customSetup,
         languageExtension,
         keymap.of([indentWithTab]),
         minimap(),
