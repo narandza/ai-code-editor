@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef } from "react";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { EditorView, keymap } from "@codemirror/view";
-import { customTheme } from "../extensions/theme";
-import { getLanguageExtension } from "../extensions/language-extension";
 import { indentWithTab } from "@codemirror/commands";
-import { minimap } from "../extensions/minimap";
+import { EditorView, keymap } from "@codemirror/view";
 import { indentationMarkers } from "@replit/codemirror-indentation-markers";
+
+import { minimap } from "../extensions/minimap";
+import { customTheme } from "../extensions/theme";
 import { customSetup } from "../extensions/custom-setup";
+import { getLanguageExtension } from "../extensions/language-extension";
 
 interface Props {
   filename: string;

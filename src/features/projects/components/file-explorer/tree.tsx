@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronRightIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 import { FileIcon, FolderIcon } from "@react-symbols/icons/utils";
 
 import {
@@ -17,7 +18,6 @@ import { CreateInput } from "./create-input";
 import { RenameInput } from "./rename-input";
 import { TreeItemWrapper } from "./tree-item-wrapper";
 import { Doc, Id } from "../../../../../convex/_generated/dataModel";
-import { useEditor } from "@/features/editor/hooks/use-editor";
 
 export const Tree = ({
   item,

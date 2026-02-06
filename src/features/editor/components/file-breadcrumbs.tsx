@@ -1,8 +1,6 @@
-import { Id } from "../../../../convex/_generated/dataModel";
-import { useEditor } from "../hooks/use-editor";
 import React from "react";
 import { FileIcon } from "@react-symbols/icons/utils";
-import { useFilePath } from "@/features/projects/hooks/use-files";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +9,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useFilePath } from "@/features/projects/hooks/use-files";
+
+import { useEditor } from "../hooks/use-editor";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export const FileBreadcrumbs = ({
   projectId,

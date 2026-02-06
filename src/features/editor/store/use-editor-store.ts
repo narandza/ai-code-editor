@@ -1,5 +1,6 @@
-import { Id } from "../../../../convex/_generated/dataModel";
 import { create } from "zustand";
+
+import { Id } from "../../../../convex/_generated/dataModel";
 
 interface TabState {
   openTabs: Id<"files">[];

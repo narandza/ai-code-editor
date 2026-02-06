@@ -1,9 +1,9 @@
-import { javascript } from "@codemirror/lang-javascript";
-import { html } from "@codemirror/lang-html";
-import { Extension } from "@codemirror/state";
 import { css } from "@codemirror/lang-css";
-import { markdown } from "@codemirror/lang-markdown";
+import { html } from "@codemirror/lang-html";
 import { json } from "@codemirror/lang-json";
+import { Extension } from "@codemirror/state";
+import { markdown } from "@codemirror/lang-markdown";
+import { javascript } from "@codemirror/lang-javascript";
 
 export const getLanguageExtension = (filename: string): Extension => {
   const ext = filename.split("").pop()?.toLocaleLowerCase();

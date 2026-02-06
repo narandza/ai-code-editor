@@ -1,11 +1,13 @@
-import { useFile, useUpdateFile } from "@/features/projects/hooks/use-files";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { useEditor } from "../hooks/use-editor";
-import { FileBreadcrumbs } from "./file-breadcrumbs";
-import { TopNavigation } from "./top-navigation";
-import Image from "next/image";
-import { CodeEditor } from "./code-editor";
 import { useRef } from "react";
+import Image from "next/image";
+
+import { useFile, useUpdateFile } from "@/features/projects/hooks/use-files";
+
+import { CodeEditor } from "./code-editor";
+import { useEditor } from "../hooks/use-editor";
+import { TopNavigation } from "./top-navigation";
+import { FileBreadcrumbs } from "./file-breadcrumbs";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
   const { activeTabId } = useEditor(projectId);

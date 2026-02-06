@@ -1,11 +1,13 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { useEditor } from "../hooks/use-editor";
-import { useFile } from "@/features/projects/hooks/use-files";
+import { XIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/spinner";
 import { FileIcon } from "@react-symbols/icons/utils";
-import { XIcon } from "lucide-react";
+import { useFile } from "@/features/projects/hooks/use-files";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+
+import { useEditor } from "../hooks/use-editor";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 const Tab = ({
   fileId,
