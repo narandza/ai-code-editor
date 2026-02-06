@@ -14,6 +14,9 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const isActiveFileBinary = activeFile && activeFile.storageId;
+  const isActiveFileText = activeFile && !activeFile.storageId;
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex items-center">
@@ -33,11 +36,11 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
             />
           </div>
         )}
-        {activeFile && (
+        {isActiveFileText && (
           <CodeEditor
             key={activeFile._id}
             filename={activeFile.name}
-            initialValue={activeFile.content ?? ""}
+            initialValue={activeFile.content}
             onChange={(content: string) => {
               if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
@@ -48,6 +51,9 @@ export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
               }, 1500); // TODO: Magic number DEBOUNCE_MS
             }}
           />
+        )}
+        {isActiveFileBinary && (
+          <p className="">TODO: Implement binary preview</p>
         )}
       </div>
     </div>
