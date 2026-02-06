@@ -3,6 +3,7 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { javascript } from "@codemirror/lang-javascript";
+import { customTheme } from "../extensions/theme";
 
 export const CodeEditor = () => {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -25,7 +26,12 @@ export const CodeEditor = () => {
       )
       `,
       parent: editorRef.current,
-      extensions: [oneDark, basicSetup, javascript({ typescript: true })],
+      extensions: [
+        customTheme,
+        oneDark,
+        basicSetup,
+        javascript({ typescript: true }),
+      ],
     });
 
     viewRef.current = view;
