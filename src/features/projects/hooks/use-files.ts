@@ -12,19 +12,34 @@ import { Id } from "../../../../convex/_generated/dataModel";
 // }
 export const useCreateFile = () => {
   return useMutation(api.files.createFile);
+
+  // TODO: Add optimistic mutation
+};
+
+export const useUpdateFile = () => {
+  return useMutation(api.files.updateFile);
+
+  // TODO: Add optimistic mutation
 };
 
 export const useCreateFolder = () => {
   return useMutation(api.files.createFolder);
+
+  // TODO: Add optimistic mutation
 };
 
 export const useRenameFile = () => {
   return useMutation(api.files.renameFile);
+
+  // TODO: Add optimistic mutation
 };
 
 export const useDeleteFile = () => {
   return useMutation(api.files.deleteFile);
+
+  // TODO: Add optimistic mutation
 };
+
 export const useFolderContents = ({
   projectId,
   parentId,

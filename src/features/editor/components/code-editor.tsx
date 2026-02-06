@@ -10,9 +10,11 @@ import { customSetup } from "../extensions/custom-setup";
 
 interface Props {
   filename: string;
+  initialValue: string;
+  onChange: (value: string) => void;
 }
 
-export const CodeEditor = ({ filename }: Props) => {
+export const CodeEditor = ({ filename, initialValue, onChange }: Props) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
 
@@ -24,19 +26,7 @@ export const CodeEditor = ({ filename }: Props) => {
   useEffect(() => {
     if (!editorRef.current) return;
     const view = new EditorView({
-      doc: `const Counter = () => {
-      const [value, setValue] = useState(0);
-      
-      const onIncrease = setValue((value) => value =1)};
-      
-      return (
-      <div className="">
-        <button onClick={onIncrease} className="">
-        {value}
-        </button>
-      </div>
-      )
-      `,
+      doc: initialValue,
       parent: editorRef.current,
       extensions: [
         customTheme,
@@ -46,14 +36,21 @@ export const CodeEditor = ({ filename }: Props) => {
         keymap.of([indentWithTab]),
         minimap(),
         indentationMarkers(),
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            onChange(update.state.doc.toString());
+          }
+        }),
       ],
     });
 
     viewRef.current = view;
+
     return () => {
       view.destroy();
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- initial value is only used for initial document
+  }, [languageExtension]);
 
   return <div ref={editorRef} className="size-full pl-4 bg-background" />;
 };
