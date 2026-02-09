@@ -8,6 +8,7 @@ import { minimap } from "../extensions/minimap";
 import { customTheme } from "../extensions/theme";
 import { customSetup } from "../extensions/custom-setup";
 import { getLanguageExtension } from "../extensions/language-extension";
+import { suggestion } from "../extensions/suggestion";
 
 interface Props {
   filename: string;
@@ -38,6 +39,7 @@ export const CodeEditor = ({
         oneDark,
         customSetup,
         languageExtension,
+        suggestion(filename),
         keymap.of([indentWithTab]),
         minimap(),
         indentationMarkers(),
