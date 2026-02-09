@@ -3,6 +3,7 @@ import {
   Decoration,
   DecorationSet,
   EditorView,
+  keymap,
   ViewPlugin,
   ViewUpdate,
   WidgetType,
@@ -91,7 +92,30 @@ const renderPlugin = ViewPlugin.fromClass(
   },
 );
 
+const acceptSuggestionKeymap = keymap.of([
+  {
+    key: "Tab",
+    run: (view) => {
+      const suggestion = view.state.field(suggestionState);
+
+      if (!suggestion) {
+        return false; // No suggestion? Let Tan tp its normal thing
+      }
+
+      const cursor = view.state.selection.main.head;
+      view.dispatch({
+        changes: { from: cursor, insert: suggestion }, // Insert the suggestion text
+        selection: { anchor: cursor + suggestion.length }, // Move cursor to end
+        effects: setSuggestionEffect.of(null), // Clear the suggestion
+      });
+
+      return true; // We handled Tab, don't indent
+    },
+  },
+]);
+
 export const suggestion = (filename: string) => [
   suggestionState, // Out state storage
   renderPlugin, // Renders the ghost text
+  acceptSuggestionKeymap, // Tab to accept
 ];
