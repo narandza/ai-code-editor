@@ -123,6 +123,10 @@ const renderPlugin = ViewPlugin.fromClass(
     }
 
     build(view: EditorView) {
+      if (isWaitingForSuggestion) {
+        return Decoration.none;
+      }
+
       // Get current suggestion from state
       const suggestion = view.state.field(suggestionState);
       if (!suggestion) {
@@ -169,6 +173,7 @@ const acceptSuggestionKeymap = keymap.of([
 
 export const suggestion = (filename: string) => [
   suggestionState, // Out state storage
+  createDebouncePlugin(filename), // Trigger suggestions on typing
   renderPlugin, // Renders the ghost text
   acceptSuggestionKeymap, // Tab to accept
 ];
