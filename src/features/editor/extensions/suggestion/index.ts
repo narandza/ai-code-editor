@@ -8,6 +8,7 @@ import {
   ViewUpdate,
   WidgetType,
 } from "@codemirror/view";
+import { fetcher } from "./fetcher";
 
 // State Effect: A way to send "messages" to update state.
 // We define one effect type for setting the suggestion text.
@@ -54,14 +55,7 @@ let debounceTimer: number | null = null;
 let isWaitingForSuggestion = false;
 const DEBOUNCE_DELAY = 300;
 
-// TODO: Cleanup this fake function
-const generateFakeSuggestion = (textBeforeCursor: string): string | null => {
-  const trimmed = textBeforeCursor.trimEnd();
-
-  if (trimmed.endsWith("const")) return "Mock return";
-
-  return null;
-};
+let currentAbortController: AbortController | null = null;
 
 const generatePayload = (view: EditorView, filename: string) => {
   const code = view.state.doc.toString();
@@ -116,14 +110,25 @@ const createDebouncePlugin = (fileName: string) => {
           clearTimeout(debounceTimer);
         }
 
+        if (currentAbortController !== null) {
+          currentAbortController.abort();
+        }
+
         isWaitingForSuggestion = true;
 
         debounceTimer = window.setTimeout(async () => {
-          // Fake suggestion (delete this block later in stage 3)
-          const cursor = view.state.selection.main.head;
-          const line = view.state.doc.lineAt(cursor);
-          const textBeforeCursor = line.text.slice(0, cursor - line.from);
-          const suggestion = generateFakeSuggestion(textBeforeCursor);
+          const payload = generatePayload(view, fileName);
+
+          if (!payload) {
+            isWaitingForSuggestion = false;
+            view.dispatch({ effects: setSuggestionEffect.of(null) });
+            return;
+          }
+          currentAbortController = new AbortController();
+          const suggestion = await fetcher(
+            payload,
+            currentAbortController.signal,
+          );
 
           isWaitingForSuggestion = false;
           view.dispatch({ effects: setSuggestionEffect.of(suggestion) });
@@ -133,6 +138,10 @@ const createDebouncePlugin = (fileName: string) => {
       destroy() {
         if (debounceTimer !== null) {
           clearTimeout(debounceTimer);
+        }
+
+        if (currentAbortController !== null) {
+          currentAbortController.abort();
         }
       }
     },

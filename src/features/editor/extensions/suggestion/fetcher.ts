@@ -2,7 +2,7 @@ import ky from "ky";
 import { z } from "zod";
 
 const suggestionRequestSchema = z.object({
-  fileName: z.string(),
+  filename: z.string(),
   code: z.string(),
   currentLine: z.string(),
   previousLines: z.string(),
