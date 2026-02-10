@@ -18,7 +18,7 @@ const setSuggestionEffect = StateEffect.define<string | null>();
 // - update(): Called on every transaction (keystroke, etc.) to potentially update the value
 const suggestionState = StateField.define<string | null>({
   create() {
-    return "TODO: Implement";
+    return null;
   },
   update(value, transaction) {
     // Check each effect in this transaction
@@ -49,6 +49,59 @@ class SuggestionWidget extends WidgetType {
     return span;
   }
 }
+
+let debounceTimer: number | null = null;
+let isWaitingForSuggestion = false;
+const DEBOUNCE_DELAY = 300;
+
+const generateFakeSuggestion = (textBeforeCursor: string): string | null => {
+  const trimmed = textBeforeCursor.trimEnd();
+
+  if (trimmed.endsWith("const")) return "Mock return";
+
+  return null;
+};
+
+const createDebouncePlugin = (fileName: string) => {
+  return ViewPlugin.fromClass(
+    class {
+      constructor(view: EditorView) {
+        this.triggerSuggestion(view);
+      }
+
+      update(update: ViewUpdate) {
+        if (update.docChanged || update.selectionSet) {
+          this.triggerSuggestion(update.view);
+        }
+      }
+
+      triggerSuggestion(view: EditorView) {
+        if (debounceTimer !== null) {
+          clearTimeout(debounceTimer);
+        }
+
+        isWaitingForSuggestion = true;
+
+        debounceTimer = window.setTimeout(async () => {
+          // Fake suggestion (delete this block later in stage 3)
+          const cursor = view.state.selection.main.head;
+          const line = view.state.doc.lineAt(cursor);
+          const textBeforeCursor = line.text.slice(0, cursor - line.from);
+          const suggestion = generateFakeSuggestion(textBeforeCursor);
+
+          isWaitingForSuggestion = false;
+          view.dispatch({ effects: setSuggestionEffect.of(suggestion) });
+        }, DEBOUNCE_DELAY);
+      }
+
+      destroy() {
+        if (debounceTimer !== null) {
+          clearTimeout(debounceTimer);
+        }
+      }
+    },
+  );
+};
 
 const renderPlugin = ViewPlugin.fromClass(
   class {
