@@ -14,6 +14,7 @@ const suggestionSchema = z.object({
     ),
 });
 
+// TODO: Check for google AI syntax
 const SUGGESTION_PROMPT = `You are a code suggestion assistant.
 
 <context>
