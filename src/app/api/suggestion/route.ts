@@ -4,6 +4,7 @@ import { z } from "zod";
 import { suggestion } from "@/features/editor/extensions/suggestion";
 import { NextResponse } from "next/server";
 import { error } from "console";
+import { auth } from "@clerk/nextjs/server";
 
 const suggestionSchema = z.object({
   suggestion: z
@@ -44,6 +45,12 @@ Your suggestion is inserted immediately after the cursor, so never suggest code 
 </instructions>`;
 
 export async function POST(request: Request) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized " }, { status: 403 });
+  }
+
   try {
     const {
       filename,
@@ -69,7 +76,7 @@ export async function POST(request: Request) {
       .replace("{lineNumber}", lineNumber.toString());
 
     const { output } = await generateText({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-2.5-flash"),
       output: Output.object({ schema: suggestionSchema }),
       prompt,
     });
@@ -78,9 +85,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Suggestion error: ", error);
     return NextResponse.json(
-      {
-        error: "Failed to generate suggestions",
-      },
+      { error: "Failed to generate suggestions" },
       { status: 500 },
     );
   }
