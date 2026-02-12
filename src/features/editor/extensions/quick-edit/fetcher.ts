@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const editRequestSchema = z.object({
-  selectCode: z.string(),
+  selectedCode: z.string(),
   fullCode: z.string(),
   instruction: z.string(),
 });
