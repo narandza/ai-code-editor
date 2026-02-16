@@ -9,6 +9,7 @@ import { customTheme } from "../extensions/theme";
 import { customSetup } from "../extensions/custom-setup";
 import { getLanguageExtension } from "../extensions/language-extension";
 import { suggestion } from "../extensions/suggestion";
+import { quickEdit } from "../extensions/quick-edit";
 
 interface Props {
   filename: string;
@@ -35,11 +36,12 @@ export const CodeEditor = ({
       doc: initialValue,
       parent: editorRef.current,
       extensions: [
-        customTheme,
         oneDark,
+        customTheme,
         customSetup,
         languageExtension,
         suggestion(filename),
+        quickEdit(filename),
         keymap.of([indentWithTab]),
         minimap(),
         indentationMarkers(),

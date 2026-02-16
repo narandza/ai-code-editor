@@ -6,7 +6,7 @@ import { markdown } from "@codemirror/lang-markdown";
 import { javascript } from "@codemirror/lang-javascript";
 
 export const getLanguageExtension = (filename: string): Extension => {
-  const ext = filename.split("").pop()?.toLocaleLowerCase();
+  const ext = filename.split(".").pop()?.toLocaleLowerCase();
 
   switch (ext) {
     case "js":
