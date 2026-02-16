@@ -1,17 +1,6 @@
-import { StateField, StateEffect } from "@codemirror/state";
-import {
-  Decoration,
-  DecorationSet,
-  EditorView,
-  keymap,
-  Tooltip,
-  ViewPlugin,
-  ViewUpdate,
-  WidgetType,
-} from "@codemirror/view";
+import { StateField, StateEffect, EditorState } from "@codemirror/state";
+import { EditorView, keymap, showTooltip, Tooltip } from "@codemirror/view";
 import { fetcher } from "./fetcher";
-import { effect } from "zod/v3";
-import { sub } from "date-fns";
 
 const showQuickEditEffect = StateEffect.define<boolean>();
 
@@ -133,12 +122,12 @@ const createQuickEditTooltip = (state: EditorState): readonly Tooltip[] => {
 
           if (editedCode) {
             editorView.dispatch({
-              changed: {
+              changes: {
                 from: selection.from,
                 to: selection.to,
                 insert: editedCode,
               },
-              selection: { anchor: selection.form + editedCode.length },
+              selection: { anchor: selection.from + editedCode.length },
               effects: showQuickEditEffect.of(false),
             });
           } else {
@@ -167,7 +156,53 @@ const createQuickEditTooltip = (state: EditorState): readonly Tooltip[] => {
   ];
 };
 
+const quickEditTooltipFiled = StateField.define<readonly Tooltip[]>({
+  create(state) {
+    return createQuickEditTooltip(state);
+  },
+  update(tooltips, transaction) {
+    if (transaction.docChanged || transaction.selection) {
+      return createQuickEditTooltip(transaction.state);
+    }
+
+    for (const effect of transaction.effects) {
+      if (effect.is(showQuickEditEffect)) {
+        return createQuickEditTooltip(transaction.state);
+      }
+    }
+
+    return tooltips;
+  },
+
+  provide: (field) =>
+    showTooltip.computeN([field], (state) => state.field(field)),
+});
+
+const quickEditKeymap = keymap.of([
+  {
+    key: "Mod-k",
+    run: (view) => {
+      const selection = view.state.selection.main;
+      if (selection.empty) {
+        return false;
+      }
+
+      view.dispatch({
+        effects: showQuickEditEffect.of(true),
+      });
+
+      return true;
+    },
+  },
+]);
+
+const captureViewExtension = EditorView.updateListener.of((update) => {
+  editorView = update.view;
+});
+
 export const quickEdit = (filename: string) => [
   quickEditState,
   quickEditTooltipFiled,
+  quickEditKeymap,
+  captureViewExtension,
 ];
