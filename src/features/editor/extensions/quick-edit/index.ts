@@ -1,5 +1,6 @@
 import { StateField, StateEffect, EditorState } from "@codemirror/state";
 import { EditorView, keymap, showTooltip, Tooltip } from "@codemirror/view";
+
 import { fetcher } from "./fetcher";
 
 export const showQuickEditEffect = StateEffect.define<boolean>();

@@ -1,4 +1,3 @@
-import { StateField, StateEffect } from "@codemirror/state";
 import {
   Decoration,
   DecorationSet,
@@ -8,6 +7,8 @@ import {
   ViewUpdate,
   WidgetType,
 } from "@codemirror/view";
+import { StateField, StateEffect } from "@codemirror/state";
+
 import { fetcher } from "./fetcher";
 
 // State Effect: A way to send "messages" to update state.

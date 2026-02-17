@@ -1,5 +1,6 @@
-import { EditorView, showTooltip, Tooltip } from "@codemirror/view";
 import { EditorState, StateField } from "@codemirror/state";
+import { EditorView, showTooltip, Tooltip } from "@codemirror/view";
+
 import { quickEditState, showQuickEditEffect } from "./quick-edit";
 
 let editorView: EditorView | null = null;

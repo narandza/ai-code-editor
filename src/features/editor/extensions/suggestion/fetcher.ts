@@ -1,6 +1,6 @@
 import ky from "ky";
-import { toast } from "sonner";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const suggestionRequestSchema = z.object({
   filename: z.string(),
