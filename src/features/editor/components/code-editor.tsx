@@ -10,6 +10,7 @@ import { customSetup } from "../extensions/custom-setup";
 import { getLanguageExtension } from "../extensions/language-extension";
 import { suggestion } from "../extensions/suggestion";
 import { quickEdit } from "../extensions/quick-edit";
+import { selectionTooltip } from "../extensions/selection-tooltip";
 
 interface Props {
   filename: string;
@@ -40,8 +41,9 @@ export const CodeEditor = ({
         customTheme,
         customSetup,
         languageExtension,
+        quickEdit(filename), // TODO: adjust the prompt; enable function 10h
         suggestion(filename),
-        quickEdit(filename),
+        selectionTooltip(),
         keymap.of([indentWithTab]),
         minimap(),
         indentationMarkers(),

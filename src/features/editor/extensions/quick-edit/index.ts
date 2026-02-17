@@ -2,12 +2,12 @@ import { StateField, StateEffect, EditorState } from "@codemirror/state";
 import { EditorView, keymap, showTooltip, Tooltip } from "@codemirror/view";
 import { fetcher } from "./fetcher";
 
-const showQuickEditEffect = StateEffect.define<boolean>();
+export const showQuickEditEffect = StateEffect.define<boolean>();
 
 let editorView: EditorView | null = null;
 let currentAbortController: AbortController | null = null;
 
-const quickEditState = StateField.define<boolean>({
+export const quickEditState = StateField.define<boolean>({
   create() {
     return false;
   },
@@ -181,6 +181,7 @@ const quickEditTooltipFiled = StateField.define<readonly Tooltip[]>({
 const quickEditKeymap = keymap.of([
   {
     key: "Mod-K",
+    preventDefault: true,
     run: (view) => {
       const selection = view.state.selection.main;
       if (selection.empty) {
