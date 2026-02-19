@@ -39,7 +39,7 @@ export default defineSchema({
 
   conversations: defineTable({
     projectId: v.id("projects"),
-    tile: v.string(),
+    title: v.string(),
     updatedAt: v.number(),
   }).index("by_project", ["projectId"]),
 
