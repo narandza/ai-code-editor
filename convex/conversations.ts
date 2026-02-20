@@ -110,7 +110,7 @@ export const getMessages = query({
       .withIndex("by_conversation", (q) =>
         q.eq("conversationId", args.conversationId),
       )
-      .order("desc")
+
       .collect();
   },
 });

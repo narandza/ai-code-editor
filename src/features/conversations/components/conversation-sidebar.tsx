@@ -49,7 +49,7 @@ export const ConversationSidebar = ({
   const conversations = useConversations(projectId);
 
   const activeConversationId =
-    selectedConversationId ?? conversations?.[0]._id ?? null;
+    selectedConversationId ?? conversations?.[0]?._id ?? null;
 
   const activeConversation = useConversation(activeConversationId);
   const conversationMessages = useMessages(activeConversationId);
@@ -103,6 +103,8 @@ export const ConversationSidebar = ({
     } catch {
       toast.error("Message failed to send");
     }
+
+    setInput("");
   };
 
   return (
@@ -140,18 +142,17 @@ export const ConversationSidebar = ({
               </MessageContent>
               {message.role === "assistant" &&
                 message.status === "completed" &&
-                messageIndex === (conversationMessages.length ?? 0) - 1}{" "}
-              && (
-              <MessageActions>
-                <MessageAction
-                  onClick={() => {
-                    navigator.clipboard.writeText(message.content);
-                  }}
-                >
-                  <CopyIcon className="size-3" />
-                </MessageAction>
-              </MessageActions>
-              )
+                messageIndex === (conversationMessages.length ?? 0) - 1 && (
+                  <MessageActions>
+                    <MessageAction
+                      onClick={() => {
+                        navigator.clipboard.writeText(message.content);
+                      }}
+                    >
+                      <CopyIcon className="size-3" />
+                    </MessageAction>
+                  </MessageActions>
+                )}
             </Message>
           ))}
           <ConversationScrollButton />
