@@ -1,10 +1,8 @@
-import { Id } from "../../../../convex/_generated/dataModel";
+import ky from "ky";
+import { toast } from "sonner";
+import { useState } from "react";
+import { CopyIcon, HistoryIcon, LoaderIcon, PlusIcon } from "lucide-react";
 
-import {
-  Conversation,
-  ConversationContent,
-  ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
 import {
   Message,
   MessageAction,
@@ -12,6 +10,11 @@ import {
   MessageContent,
   MessageResponse,
 } from "@/components/ai-elements/message";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
 import {
   PromptInput,
   PromptInputBody,
@@ -21,18 +24,16 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from "@/components/ai-elements/prompt-input";
-import { DEFAULT_CONVERSATION_TITLE } from "../../../../convex/constants";
 import { Button } from "@/components/ui/button";
-import { CopyIcon, HistoryIcon, LoaderIcon, PlusIcon } from "lucide-react";
+
 import {
   useConversation,
   useConversations,
   useCreateConversation,
   useMessages,
 } from "../hooks/use-conversations";
-import { useState } from "react";
-import { toast } from "sonner";
-import ky from "ky";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { DEFAULT_CONVERSATION_TITLE } from "../../../../convex/constants";
 
 interface ConversationSidebarProps {
   projectId: Id<"projects">;

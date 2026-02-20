@@ -10,8 +10,6 @@ import { EditorView } from "@/features/editor/components/editor-view";
 import { FileExplorer } from "./file-explorer";
 import { Id } from "../../../../convex/_generated/dataModel";
 
-import "allotment/dist/style.css";
-
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;
 const DEFAULT_SIDEBAR_WIDTH = 350;
