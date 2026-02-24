@@ -108,7 +108,7 @@ export const updateMessageStatus = mutation({
     validateInternalKey(args.internalKey);
 
     return await ctx.db.patch(args.messageId, {
-      status: "completed" as const,
+      status: args.status,
     });
   },
 });
