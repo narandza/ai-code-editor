@@ -60,6 +60,7 @@ export const processMessage = inngest.createFunction(
       await convex.mutation(api.system.updateMessageContent, {
         internalKey,
         messageId,
+
         content: "AI processed this message (TODO)",
       });
     });

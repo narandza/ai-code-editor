@@ -60,6 +60,16 @@ export const ConversationSidebar = ({
     (msg) => msg.status === "processing",
   );
 
+  const handleCancel = async () => {
+    try {
+      await ky.post("/api/messages/cancel", {
+        json: { projectId },
+      });
+    } catch {
+      toast.error("Unable to cancel request");
+    }
+  };
+
   const handleCreateConversation = async () => {
     try {
       const newConversationId = await createConversation({
@@ -78,7 +88,7 @@ export const ConversationSidebar = ({
   const handleSubmit = async (message: PromptInputMessage) => {
     // If processing and no new message, this is just aa stop function
     if (isProcessing && !message.text) {
-      // TODO: await handleCancel()
+      await handleCancel();
       setInput("");
       return;
     }
