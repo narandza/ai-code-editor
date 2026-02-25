@@ -14,11 +14,11 @@ const paramsSchema = z.object({
     .min(1, "Provide at least one file ID"),
 });
 
-export const createReadFIlesTool = ({ internalKey }: ReadFileToolOptions) => {
+export const createReadFilesTool = ({ internalKey }: ReadFileToolOptions) => {
   return createTool({
     name: "readFiles",
     description:
-      "Rad the content of files from the project. Returns file contents.",
+      "Read the content of files from the project. Returns file contents.",
     parameters: z.object({
       fileIds: z.array(z.string()).describe("Array of file IDs to read"),
     }),

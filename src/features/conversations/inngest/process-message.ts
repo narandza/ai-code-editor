@@ -11,6 +11,7 @@ import {
 import { api } from "../../../../convex/_generated/api";
 import { DEFAULT_CONVERSATION_TITLE } from "../constants";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { createReadFilesTool } from "./tools/read-files";
 
 interface MessageEvent {
   messageId: Id<"messages">;
@@ -149,7 +150,7 @@ export const processMessage = inngest.createFunction(
         model: "claude-opus-4-0",
         defaultParameters: { temperature: 0.3, max_tokens: 16000 }, // TODO: Magic number
       }),
-      tools: [],
+      tools: [createReadFilesTool({ internalKey })],
     });
 
     await step.run("update-assistant-message", async () => {
