@@ -4,7 +4,7 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { convex } from "@/lib/convex-client";
 
-interface ReadFileToolOptions {
+interface ReadFilesToolOptions {
   internalKey: string;
 }
 
@@ -14,7 +14,7 @@ const paramsSchema = z.object({
     .min(1, "Provide at least one file ID"),
 });
 
-export const createReadFilesTool = ({ internalKey }: ReadFileToolOptions) => {
+export const createReadFilesTool = ({ internalKey }: ReadFilesToolOptions) => {
   return createTool({
     name: "readFiles",
     description:

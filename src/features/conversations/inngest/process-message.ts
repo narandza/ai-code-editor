@@ -13,6 +13,7 @@ import { DEFAULT_CONVERSATION_TITLE } from "../constants";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { createReadFilesTool } from "./tools/read-files";
 import { createListFileTool } from "./tools/list-files";
+import { createUpdateFileTool } from "./tools/update-file";
 
 interface MessageEvent {
   messageId: Id<"messages">;
@@ -154,6 +155,7 @@ export const processMessage = inngest.createFunction(
       tools: [
         createListFileTool({ internalKey, projectId }),
         createReadFilesTool({ internalKey }),
+        createUpdateFileTool({ internalKey }),
       ],
     });
 

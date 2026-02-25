@@ -4,7 +4,7 @@ import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { convex } from "@/lib/convex-client";
 
-interface ListFileToolOptions {
+interface ListFilesToolOptions {
   projectId: Id<"projects">;
   internalKey: string;
 }
@@ -12,7 +12,7 @@ interface ListFileToolOptions {
 export const createListFileTool = ({
   projectId,
   internalKey,
-}: ListFileToolOptions) => {
+}: ListFilesToolOptions) => {
   return createTool({
     name: "listFiles",
     description:
