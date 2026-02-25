@@ -109,7 +109,7 @@ export const processMessage = inngest.createFunction(
         system: TITLE_GENERATOR_SYSTEM_PROMPT,
         model: anthropic({
           model: "claude-haiku-4-5-20251001",
-          defaultParameters: { temperature: 0, max_tokens: 50 },
+          defaultParameters: { temperature: 0, max_tokens: 50 }, // TODO Magic number
         }),
       });
 
@@ -139,6 +139,18 @@ export const processMessage = inngest.createFunction(
         }
       }
     }
+
+    // Create the coding agent with file tools
+    const constAgent = createAgent({
+      name: "polaris",
+      description: "An expert AI coding assistant",
+      system: systemPrompt,
+      model: anthropic({
+        model: "claude-opus-4-0",
+        defaultParameters: { temperature: 0.3, max_tokens: 16000 }, // TODO: Magic number
+      }),
+      tools: [],
+    });
 
     await step.run("update-assistant-message", async () => {
       await convex.mutation(api.system.updateMessageContent, {
