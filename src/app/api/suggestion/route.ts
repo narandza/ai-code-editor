@@ -5,6 +5,7 @@ import { suggestion } from "@/features/editor/extensions/suggestion";
 import { NextResponse } from "next/server";
 import { error } from "console";
 import { auth } from "@clerk/nextjs/server";
+import { anthropic } from "@ai-sdk/anthropic";
 
 const suggestionSchema = z.object({
   suggestion: z
@@ -77,7 +78,7 @@ export async function POST(request: Request) {
       .replace("{lineNumber}", lineNumber.toString());
 
     const { output } = await generateText({
-      model: google("gemini-2.5-flash"),
+      model: anthropic("claude-haiku-4-5-20251001"),
       output: Output.object({ schema: suggestionSchema }),
       prompt,
     });

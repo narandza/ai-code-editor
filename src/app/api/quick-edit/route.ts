@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
 import { firecrawl } from "@/lib/firecrawl";
+import { anthropic } from "@ai-sdk/anthropic";
 
 const quickEditSchema = z.object({
   editedCode: z
@@ -100,7 +101,7 @@ export async function POST(request: Request) {
       .replace("{documentation}", documentationContext);
 
     const { output } = await generateText({
-      model: google("gemini-2.5-flash"),
+      model: anthropic("claude-haiku-4-5-20251001"),
       output: Output.object({ schema: quickEditSchema }),
       prompt,
     });
