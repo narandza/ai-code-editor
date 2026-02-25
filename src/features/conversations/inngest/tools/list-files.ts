@@ -9,7 +9,7 @@ interface ListFileToolOptions {
   internalKey: string;
 }
 
-export const createListFIleTool = ({
+export const createListFileTool = ({
   projectId,
   internalKey,
 }: ListFileToolOptions) => {

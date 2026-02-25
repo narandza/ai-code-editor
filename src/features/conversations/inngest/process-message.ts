@@ -1,5 +1,5 @@
 import { NonRetriableError } from "inngest";
-import { anthropic, createAgent } from "@inngest/agent-kit";
+import { anthropic, createAgent, createNetwork } from "@inngest/agent-kit";
 
 import { inngest } from "@/inngest/client";
 import { convex } from "@/lib/convex-client";
@@ -12,6 +12,7 @@ import { api } from "../../../../convex/_generated/api";
 import { DEFAULT_CONVERSATION_TITLE } from "../constants";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { createReadFilesTool } from "./tools/read-files";
+import { createListFileTool } from "./tools/list-files";
 
 interface MessageEvent {
   messageId: Id<"messages">;
@@ -142,7 +143,7 @@ export const processMessage = inngest.createFunction(
     }
 
     // Create the coding agent with file tools
-    const constAgent = createAgent({
+    const codingAgent = createAgent({
       name: "polaris",
       description: "An expert AI coding assistant",
       system: systemPrompt,
@@ -150,16 +151,64 @@ export const processMessage = inngest.createFunction(
         model: "claude-opus-4-0",
         defaultParameters: { temperature: 0.3, max_tokens: 16000 }, // TODO: Magic number
       }),
-      tools: [createReadFilesTool({ internalKey })],
+      tools: [
+        createListFileTool({ internalKey, projectId }),
+        createReadFilesTool({ internalKey }),
+      ],
     });
 
+    // Create network with single agent
+    const network = createNetwork({
+      name: "polaris-network",
+      agents: [codingAgent],
+      maxIter: 10, // TODO: Magic number
+      router: ({ network }) => {
+        const lastResult = network.state.results.at(-1);
+        const hasTextResponse = lastResult?.output.some(
+          (m) => m.type === "text" && m.role === "assistant",
+        );
+
+        const hasToolCalls = lastResult?.output.some(
+          (m) => m.type === "tool_call",
+        );
+
+        // Only stop if there's text WITHOUT tool calls (final response)
+        if (hasTextResponse && !hasToolCalls) {
+          return undefined;
+        }
+
+        return codingAgent;
+      },
+    });
+
+    // Run the agent
+    const result = await network.run(message);
+
+    // Extract the assistant's text response from the last agent result
+    const lastResult = result.state.results.at(-1);
+    const textMessage = lastResult?.output.find(
+      (m) => m.type === "text" && m.role === "assistant",
+    );
+
+    let assistantResponse =
+      "I processed your request. Let me know if you need anything else!";
+
+    if (textMessage?.type === "text") {
+      assistantResponse =
+        typeof textMessage.content === "string"
+          ? textMessage.content
+          : textMessage.content.map((c) => c.text).join("");
+    }
+
+    // Update the assistant message with response (this also sets status to completed)
     await step.run("update-assistant-message", async () => {
       await convex.mutation(api.system.updateMessageContent, {
         internalKey,
         messageId,
-
-        content: "AI processed this message (TODO)",
+        content: assistantResponse,
       });
     });
+
+    return { success: true, messageId, conversationId };
   },
 );
