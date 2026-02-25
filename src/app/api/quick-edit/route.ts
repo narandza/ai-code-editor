@@ -1,11 +1,10 @@
 import z from "zod";
-import { google } from "@ai-sdk/google";
 import { generateText, Output } from "ai";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+import { anthropic } from "@ai-sdk/anthropic";
 
 import { firecrawl } from "@/lib/firecrawl";
-import { anthropic } from "@ai-sdk/anthropic";
 
 const quickEditSchema = z.object({
   editedCode: z

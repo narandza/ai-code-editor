@@ -1,9 +1,6 @@
-import { generateText, Output } from "ai";
-import { google } from "@ai-sdk/google";
 import { z } from "zod";
-import { suggestion } from "@/features/editor/extensions/suggestion";
+import { generateText, Output } from "ai";
 import { NextResponse } from "next/server";
-import { error } from "console";
 import { auth } from "@clerk/nextjs/server";
 import { anthropic } from "@ai-sdk/anthropic";
 

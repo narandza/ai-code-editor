@@ -1,16 +1,16 @@
 import { NonRetriableError } from "inngest";
+import { anthropic, createAgent } from "@inngest/agent-kit";
 
 import { inngest } from "@/inngest/client";
 import { convex } from "@/lib/convex-client";
 
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
 import {
   CODING_AGENT_SYSTEM_PROMPT,
   TITLE_GENERATOR_SYSTEM_PROMPT,
 } from "./constants";
+import { api } from "../../../../convex/_generated/api";
 import { DEFAULT_CONVERSATION_TITLE } from "../constants";
-import { anthropic, createAgent } from "@inngest/agent-kit";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 interface MessageEvent {
   messageId: Id<"messages">;

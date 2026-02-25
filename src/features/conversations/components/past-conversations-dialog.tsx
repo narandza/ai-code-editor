@@ -1,5 +1,7 @@
 "use client";
 
+import { formatDistanceToNow } from "date-fns";
+
 import {
   CommandDialog,
   CommandEmpty,
@@ -8,9 +10,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useConversations } from "../hooks/use-conversations";
-import { formatDistanceToNow } from "date-fns";
 
 interface PastConversationsDialogProps {
   projectId: Id<"projects">;
