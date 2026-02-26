@@ -21,7 +21,7 @@ const paramsSchema = z.object({
     .min(1, "Provide at least one file to create"),
 });
 
-export const createCreateFileTool = ({
+export const createCreateFilesTool = ({
   projectId,
   internalKey,
 }: CreateFilesToolOptions) => {
