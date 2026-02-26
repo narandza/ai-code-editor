@@ -47,7 +47,7 @@ export const createUpdateFileTool = ({
       }
 
       try {
-        return await toolStep?.run("update-files", async () => {
+        return await toolStep?.run("update-file", async () => {
           await convex.mutation(api.system.updateFile, {
             internalKey,
             fileId: fileId as Id<"files">,
@@ -57,7 +57,7 @@ export const createUpdateFileTool = ({
           return `File "${fileId}" updated successfully`;
         });
       } catch (error) {
-        return `Error updating files: ${error instanceof Error ? error.message : "Unknown error"}`;
+        return `Error updating file: ${error instanceof Error ? error.message : "Unknown error"}`;
       }
     },
   });
