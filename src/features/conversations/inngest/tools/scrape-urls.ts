@@ -1,7 +1,8 @@
-import { firecrawl } from "@/lib/firecrawl";
-import { createTool } from "@inngest/agent-kit";
 import z from "zod";
 import { ur } from "zod/v4/locales";
+import { createTool } from "@inngest/agent-kit";
+
+import { firecrawl } from "@/lib/firecrawl";
 
 const paramsSchema = z.object({
   urls: z
