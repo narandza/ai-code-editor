@@ -1,12 +1,11 @@
 import { FileSystemTree } from "@webcontainer/api";
-import { Doc } from "../../../../convex/_generated/dataModel";
+import { Doc, Id } from "../../../../convex/_generated/dataModel";
 
 type FileDoc = Doc<"files">;
 
 /**
  * Convert flat COnvex files to nested FileSystemTree for WebContainer
  */
-
 export const buildTreeFile = (files: FileDoc[]): FileSystemTree => {
   const tree: FileSystemTree = {};
   const filesMap = new Map(files.map((f) => [f._id, f]));
@@ -54,4 +53,25 @@ export const buildTreeFile = (files: FileDoc[]): FileSystemTree => {
   }
 
   return tree;
+};
+
+/**
+ * Get full path for a file by traversing parent chain
+ */
+export const getFilePath = (
+  file: FileDoc,
+  filesMap: Map<Id<"files">, FileDoc>,
+): string => {
+  const parts: string[] = [file.name];
+  let parentId = file.parentId;
+
+  while (parentId) {
+    const parent = filesMap.get(parentId);
+    if (!parent) break;
+
+    parts.unshift(parent.name);
+    parentId = parent.parentId;
+  }
+
+  return parts.join("/");
 };
