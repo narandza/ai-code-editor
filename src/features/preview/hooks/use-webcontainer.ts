@@ -1,9 +1,9 @@
 import { WebContainer } from "@webcontainer/api";
-import { Id } from "../../../../convex/_generated/dataModel";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useFiles } from "@/features/projects/hooks/use-files";
 
+import { Id } from "../../../../convex/_generated/dataModel";
 import { buildFileTree, getFilePath } from "../utils/file-tree";
 
 let webcontainerInstance: WebContainer | null = null;

@@ -1,19 +1,21 @@
 "use client";
 
 import z from "zod";
-import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useState } from "react";
+import { SettingsIcon } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
-import { useUpdateProjectSettings } from "@/features/projects/hooks/use-projects";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { SettingsIcon } from "lucide-react";
-import { FieldLabel, Field, FieldDescription } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FieldLabel, Field, FieldDescription } from "@/components/ui/field";
+import { useUpdateProjectSettings } from "@/features/projects/hooks/use-projects";
+
+import { Doc, Id } from "../../../../convex/_generated/dataModel";
 
 const formSchema = z.object({
   installCommand: z.string(),

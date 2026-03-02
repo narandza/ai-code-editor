@@ -1,20 +1,21 @@
 "use client";
 
-import { useProject } from "@/features/projects/hooks/use-projects";
-import { Id } from "../../../../convex/_generated/dataModel";
-import { useState } from "react";
-import { UseWebContainer } from "../hooks/use-webcontainer";
-import { Button } from "@/components/ui/button";
 import {
   AlertTriangleIcon,
   Loader2Icon,
   RefreshCwIcon,
   TerminalSquareIcon,
 } from "lucide-react";
-import { stat } from "fs";
-import { PreviewSettingsPopover } from "./preview-settings-popover";
+import { useState } from "react";
 import { Allotment } from "allotment";
+
+import { Button } from "@/components/ui/button";
+import { useProject } from "@/features/projects/hooks/use-projects";
+
 import { PreviewTerminal } from "./preview-terminal";
+import { UseWebContainer } from "../hooks/use-webcontainer";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { PreviewSettingsPopover } from "./preview-settings-popover";
 
 export const PreviewView = ({ projectId }: { projectId: Id<"projects"> }) => {
   const project = useProject(projectId);
