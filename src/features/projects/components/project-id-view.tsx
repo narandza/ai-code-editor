@@ -9,6 +9,7 @@ import { EditorView } from "@/features/editor/components/editor-view";
 
 import { FileExplorer } from "./file-explorer";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { PreviewView } from "@/features/preview/components/preview-view";
 
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;
@@ -90,7 +91,7 @@ export const ProjectIdView = ({ projectId }: { projectId: Id<"projects"> }) => {
             activeView === "preview" ? "visible" : "invisible",
           )}
         >
-          <div className="">Preview</div>
+          <PreviewView projectId={projectId} />
         </div>
       </div>
     </div>
