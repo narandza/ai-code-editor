@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     ownerId: userId,
   });
 
-  await inngest.send({
+  const event = await inngest.send({
     name: "github/import.repo",
     data: {
       owner,
@@ -68,5 +68,5 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json({ success: true, projectId });
+  return NextResponse.json({ success: true, projectId, eventId: event.ids[0] });
 }
