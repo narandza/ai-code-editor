@@ -4,6 +4,8 @@ import { convex } from "@/lib/convex-client";
 import { api } from "../../../../convex/_generated/api";
 import { NonRetriableError } from "inngest";
 import { Octokit } from "octokit";
+import { isBinaryFile } from "isbinaryfile";
+import ky from "ky";
 
 interface ImportGithubRepoEvent {
   owner: string;
@@ -89,7 +91,7 @@ export const importGithubRepo = inngest.createFunction(
     // Return the folder map from the step so it can be used in subsequent steps
     //(Inngest serializes step results, so we use a plain object instead of Map)
 
-    const folderMap = await step.run("create-folders", async () => {
+    const folderIdMap = await step.run("create-folders", async () => {
       const map: Record<string, Id<"files">> = {};
 
       for (const folder of folders) {
@@ -130,7 +132,50 @@ export const importGithubRepo = inngest.createFunction(
             repo,
             file_sha: file.sha,
           });
-        } catch {}
+
+          const buffer = Buffer.from(blob.content, "base64");
+          const isBinary = await isBinaryFile(buffer);
+
+          const pathParts = file.path.split("/");
+          const name = pathParts.pop()!;
+          const parentPath = pathParts.join("/");
+
+          const parentId = parentPath ? folderIdMap[parentPath] : undefined;
+
+          if (isBinary) {
+            const uploadUrl = await convex.mutation(
+              api.system.generateUploadUrl,
+              { internalKey },
+            );
+
+            const { storageId } = await ky
+              .post(uploadUrl, {
+                headers: { "Content-Type": "application/octet-stream" },
+                body: buffer,
+              })
+              .json<{ storageId: Id<"_storage"> }>();
+
+            await convex.mutation(api.system.createBinaryFile, {
+              internalKey,
+              projectId,
+              name,
+              storageId,
+              parentId,
+            });
+          } else {
+            const content = buffer.toString("utf-8");
+
+            await convex.mutation(api.system.createFile, {
+              internalKey,
+              projectId,
+              name,
+              content,
+              parentId,
+            });
+          }
+        } catch {
+          console.error(`Failed to import file: ${file.path}`);
+        }
       }
     });
   },
