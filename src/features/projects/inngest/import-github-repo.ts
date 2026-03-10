@@ -6,6 +6,7 @@ import { NonRetriableError } from "inngest";
 import { Octokit } from "octokit";
 import { isBinaryFile } from "isbinaryfile";
 import ky from "ky";
+import { success } from "zod";
 
 interface ImportGithubRepoEvent {
   owner: string;
@@ -178,5 +179,15 @@ export const importGithubRepo = inngest.createFunction(
         }
       }
     });
+
+    await step.run("set-completed-status", async () => {
+      await convex.mutation(api.system.updateImportStatus, {
+        internalKey,
+        projectId,
+        status: "completed",
+      });
+    });
+
+    return { success: true, projectId };
   },
 );
