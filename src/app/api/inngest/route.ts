@@ -4,12 +4,10 @@ import { processMessage } from "@/features/conversations/inngest/process-message
 
 import { inngest } from "../../../inngest/client";
 import { demoError, demoGenerate } from "../../../inngest/functions";
+import { importGithubRepo } from "@/features/projects/inngest/import-github-repo";
+import { exportToGithub } from "@/features/projects/inngest/export-to-github";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
-  functions: [
-    demoGenerate, // <-- This is where you'll always add all your functions
-    demoError,
-    processMessage,
-  ],
+  functions: [processMessage, importGithubRepo, exportToGithub],
 });
