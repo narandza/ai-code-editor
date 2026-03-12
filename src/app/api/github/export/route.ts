@@ -25,12 +25,12 @@ export async function POST(request: Request) {
   const client = await clerkClient();
   const tokens = await client.users.getUserOauthAccessToken(userId, "github");
 
-  const githubToken = tokens.data[0].token;
+  const githubToken = tokens.data?.[0]?.token;
 
   if (!githubToken) {
     return NextResponse.json(
       {
-        error: "GitHub is not connected. Please reconnect your GitHub account.",
+        error: "GitHub not connected",
       },
       { status: 400 },
     );

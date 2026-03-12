@@ -123,7 +123,7 @@ export const importGithubRepo = inngest.createFunction(
       (item) => item.type === "blob" && item.path && item.sha,
     );
 
-    await step.run("crate-files", async () => {
+    await step.run("create-files", async () => {
       for (const file of allFiles) {
         if (!file.path || !file.sha) continue;
 
