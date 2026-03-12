@@ -1,41 +1,48 @@
 import { useClerk } from "@clerk/nextjs";
 import { useForm } from "@tanstack/react-form";
 import ky, { HTTPError } from "ky";
-import { useRouter } from "next/router";
 import z from "zod";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { toast } from "sonner";
-import { err } from "inngest/types";
-import {
-  Dialog,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import React from "react";
+import { FaGithub } from "react-icons/fa";
+import { useProject } from "../hooks/use-projects";
+import { CheckCircle2Icon, ExternalLinkIcon, LoaderIcon } from "lucide-react";
 
 const formSchema = z.object({
-  url: z.url("Please enter a valid URL"),
+  repoName: z
+    .string()
+    .min(1, "Repository name is required")
+    .max(100, "Repository name is too long")
+    .regex(
+      /^[a-zA-z0-9._-]+$/,
+      "Only alphanumeric characters, hyphens, underscores, and dots are allowed",
+    ),
+  visibility: z.enum(["public", "private"]),
+  description: z.string().max(350, "Description is too long"),
 });
 
-interface ImportGithubDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+interface ExportPopoverProps {
+  projectId: Id<"projects">;
 }
 
-export const ImportGithubDialog = ({
-  open,
-  onOpenChange,
-}: ImportGithubDialogProps) => {
-  const router = useRouter();
+export const ExportPopover = ({ projectId }: ExportPopoverProps) => {
+  const project = useProject(projectId);
+  const [open, setOpen] = React.useState(false);
   const { openUserProfile } = useClerk();
+
+  const exportStatus = project?.exportStatus;
+  const exportRepoUrl = project?.exportRepoUrl;
 
   const form = useForm({
     defaultValues: {
-      url: "",
+      repoName: project?.name?.replace(/[^a-zA-Z0-9._-]/g, "-") ?? "",
+      visibility: "private" as "public" | "private",
+      description: "",
     },
 
     validators: {
@@ -44,23 +51,16 @@ export const ImportGithubDialog = ({
 
     onSubmit: async ({ value }) => {
       try {
-        const { projectId } = await ky
-          .post("/api/github/import", {
-            json: {
-              url: value.url,
-            },
-          })
-          .json<{
-            success: boolean;
-            projectId: Id<"projects">;
-            eventId: string;
-          }>();
+        await ky.post("/api/github/export", {
+          json: {
+            projectId,
+            repoName: value.repoName,
+            visibility: value.visibility,
+            description: value.description || undefined,
+          },
+        });
 
-        toast.success("Importing repository...");
-        onOpenChange(false);
-        form.reset();
-
-        router.push(`/projects/${projectId}`);
+        toast.success("Export started...");
       } catch (error) {
         if (error instanceof HTTPError) {
           const body = await error.response.json<{ error: string }>();
@@ -73,17 +73,68 @@ export const ImportGithubDialog = ({
               },
             });
 
-            onOpenChange(false);
+            setOpen(false);
             return;
           }
         }
 
-        toast.error(
-          "Unable to import repository. Please check the URL and try again",
-        );
+        toast.error("Unable to export repository.");
       }
     },
   });
+
+  const handleCancelExport = async () => {
+    await ky.post("/api/github/export/cancel", {
+      json: { projectId },
+    });
+  };
+
+  const handleResetExport = async () => {
+    await ky.post("/api/github/export/reset", {
+      json: { projectId },
+    });
+  };
+
+  const renderContent = () => {
+    if (exportStatus === "exporting") {
+      return (
+        <div className="flex flex-col items-center gap-3">
+          <LoaderIcon className="size-6 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
+            Exporting to Github...
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full"
+            onClick={handleCancelExport}
+          >
+            Cancel
+          </Button>
+        </div>
+      );
+    }
+
+    if (exportStatus === "completed" && exportRepoUrl) {
+      return (
+        <div className="flex flex-col items-center gap-3">
+          <CheckCircle2Icon className="size-6 text-emerald-500" />
+          <p className="text-sm font-medium">Repository created</p>
+          <p className="text-xs text-muted-foreground text-center">
+            Your project has been exported to GutHub.
+          </p>
+          <div className="flex flex-col w-full gap-2">
+            <Button size="sm" className="w-full" asChild>
+              <a href={exportRepoUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLinkIcon className="size-4 mr-1" />
+                View on GitHub
+              </a>
+            </Button>
+          </div>
+        </div>
+      );
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
