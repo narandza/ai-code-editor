@@ -11,7 +11,27 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { FaGithub } from "react-icons/fa";
 import { useProject } from "../hooks/use-projects";
-import { CheckCircle2Icon, ExternalLinkIcon, LoaderIcon } from "lucide-react";
+import {
+  CheckCheckIcon,
+  CheckCircle2Icon,
+  ExternalLinkIcon,
+  LoaderIcon,
+  XCircleIcon,
+} from "lucide-react";
+import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const formSchema = z.object({
   repoName: z
@@ -125,73 +145,169 @@ export const ExportPopover = ({ projectId }: ExportPopoverProps) => {
           </p>
           <div className="flex flex-col w-full gap-2">
             <Button size="sm" className="w-full" asChild>
-              <a href={exportRepoUrl} target="_blank" rel="noopener noreferrer">
+              <Link
+                href={exportRepoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <ExternalLinkIcon className="size-4 mr-1" />
                 View on GitHub
-              </a>
+              </Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full"
+              onClick={handleResetExport}
+            >
+              Close
             </Button>
           </div>
         </div>
       );
     }
-  };
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogHeader>
-        <DialogTitle>Import from GitHub</DialogTitle>
-        <DialogDescription>
-          Enter a Github repository URL to import. A new project will be created
-          with the repository contents.
-        </DialogDescription>
-      </DialogHeader>
+    if (exportStatus === "failed") {
+      return (
+        <div className="flex flex-col items-center gap-3">
+          <XCircleIcon className="size-6 text-rose-500" />
+          <p className="text-sm font-medium">Unable to export</p>
+          <p className="text-xs text-muted-foreground text-center">
+            Something went wrong. Please try again.
+          </p>
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full"
+            onClick={handleResetExport}
+          >
+            Retry
+          </Button>
+        </div>
+      );
+    }
+
+    return (
       <form
         onSubmit={(e) => {
           e.preventDefault();
           form.handleSubmit();
         }}
       >
-        <form.Field name="url">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h4 className="font-medium text-sm">Export to Github</h4>
+            <p className="text-sm text-muted-foreground">
+              Export your project to a GitHub repository.
+            </p>
+          </div>
+          <form.Field name="repoName">
+            {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
 
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Repository URL</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Repository Name</FieldLabel>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    placeholder="my-project"
+                  />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+          <form.Field name="visibility">
+            {(field) => (
+              <Field>
+                <FieldLabel htmlFor={field.name}>Visibility</FieldLabel>
+                <Select
                   value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  aria-invalid={isInvalid}
-                  placeholder="https://github.com/owner/repo"
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                  onValueChange={(value: "public" | "private") => {
+                    field.handleChange(value);
+                  }}
+                >
+                  <SelectTrigger id={field.name}>
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="private">Private</SelectItem>
+                    <SelectItem value="public">Public</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
-            );
-          }}
-        </form.Field>
-        <DialogFooter className="mt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
+            )}
+          </form.Field>
+
+          <form.Field name="description">
+            {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                  <Textarea
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    aria-invalid={isInvalid}
+                    placeholder="A short description of your project"
+                    rows={2} // TODO: Magic number
+                  />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
             {([canSubmit, isSubmitting]) => (
               <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                {isSubmitting ? "Importing..." : "Import"}
+                {isSubmitting ? "Creating..." : "Create Repository"}
               </Button>
             )}
           </form.Subscribe>
-        </DialogFooter>
+        </div>
       </form>
-    </Dialog>
+    );
+  };
+
+  const getStatusIcon = () => {
+    if (exportStatus === "exporting") {
+      return <LoaderIcon className="size-3.5 animate-spin" />;
+    }
+    if (exportStatus === "completed") {
+      return <CheckCheckIcon className="size-3.5 text-emerald-500 " />;
+    }
+    if (exportStatus === "failed") {
+      return <XCircleIcon className="size-3.5 text-rose-500" />;
+    }
+
+    return <FaGithub className="size-3.5" />;
+  };
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <div className="flex items-center gap-1.5 h-full px-3 cursor-pointer text-muted-foreground border-l hover:bg-accent/30">
+          {getStatusIcon()}
+          <span className="text-sm">Export</span>
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-80" align="start">
+        {renderContent()}
+      </PopoverContent>
+    </Popover>
   );
 };
