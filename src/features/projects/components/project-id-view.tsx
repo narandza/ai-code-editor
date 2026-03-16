@@ -2,15 +2,14 @@
 
 import { useState } from "react";
 import { Allotment } from "allotment";
-import { FaGithub } from "react-icons/fa";
 
 import { cn } from "@/lib/utils";
 import { EditorView } from "@/features/editor/components/editor-view";
 import { PreviewView } from "@/features/preview/components/preview-view";
 
 import { FileExplorer } from "./file-explorer";
-import { Id } from "../../../../convex/_generated/dataModel";
 import { ExportPopover } from "./export-popover";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 const MIN_SIDEBAR_WIDTH = 200;
 const MAX_SIDEBAR_WIDTH = 800;

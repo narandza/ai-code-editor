@@ -1,11 +1,12 @@
-import { inngest } from "@/inngest/client";
-import { Doc, Id } from "../../../../convex/_generated/dataModel";
-import { convex } from "@/lib/convex-client";
-import { api } from "../../../../convex/_generated/api";
-import { NonRetriableError } from "inngest";
-import { Octokit } from "octokit";
 import ky from "ky";
-import { blob } from "stream/consumers";
+import { Octokit } from "octokit";
+import { NonRetriableError } from "inngest";
+
+import { inngest } from "@/inngest/client";
+import { convex } from "@/lib/convex-client";
+
+import { Doc, Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
 
 interface ExportToGithubEvent {
   projectId: Id<"projects">;

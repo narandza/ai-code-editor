@@ -1,9 +1,11 @@
-import { convex } from "@/lib/convex-client";
-import { auth, clerkClient } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 import z from "zod";
-import { api } from "../../../../../convex/_generated/api";
+import { NextResponse } from "next/server";
+
+import { convex } from "@/lib/convex-client";
 import { inngest } from "@/inngest/client";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+
+import { api } from "../../../../../convex/_generated/api";
 
 const requestSchema = z.object({
   url: z.url(),
