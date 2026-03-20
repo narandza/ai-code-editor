@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { AlertTriangleIcon } from "lucide-react";
 
 import { useFile, useUpdateFile } from "@/features/projects/hooks/use-files";
 
@@ -8,7 +9,6 @@ import { useEditor } from "../hooks/use-editor";
 import { TopNavigation } from "./top-navigation";
 import { FileBreadcrumbs } from "./file-breadcrumbs";
 import { Id } from "../../../../convex/_generated/dataModel";
-import { AlertTriangleIcon } from "lucide-react";
 
 export const EditorView = ({ projectId }: { projectId: Id<"projects"> }) => {
   const { activeTabId } = useEditor(projectId);

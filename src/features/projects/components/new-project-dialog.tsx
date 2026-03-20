@@ -1,5 +1,17 @@
 "use client";
 
+import ky from "ky";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import {
   PromptInput,
   PromptInputBody,
@@ -9,18 +21,8 @@ import {
   PromptInputTools,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import ky from "ky";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
 import { Id } from "../../../../convex/_generated/dataModel";
-import { toast } from "sonner";
 
 interface NewProjectDialogProps {
   open: boolean;
